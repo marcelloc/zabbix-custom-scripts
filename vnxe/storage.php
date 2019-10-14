@@ -4,6 +4,15 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 $now   = new DateTime;
 
+//vnxe linux server settings
+$vnxe_linux_ip_address = "10.10.10.10";
+$vnxe_linux_username = "username";
+$vnxe_linux_password = "verysecretPassword";
+
+//Storage cedentials
+$storage_user = "monitor";
+$storage_password = "monitor_passowrd";
+
 $log_argv = $argv;
 array_shift($log_argv);
 $script_name=explode("/", $argv[0]);
@@ -13,7 +22,7 @@ gera_log(end($script_name) . " " . implode (" ", $log_argv));
 set_include_path(get_include_path() . PATH_SEPARATOR . 'phpseclib');
 
 if (count($argv) < 3) {
-    die ("Erro. Missing arguments!\n\nUsage: {$argv[0]} storage_ip cmd discovery|debug|cmd info\n\nex: {$argv[0]} 172.16.57.100 system discovery\n\n");
+    die ("Erro. Missing arguments!\n\nUsage: {$argv[0]} storage_ip cmd discovery|debug|cmd info\n\nex: {$argv[0]} 10.10.10.11 system discovery\n\n");
 }
 if (in_array("debug",$argv) || $argv[2] == "all") {
     $debug = "on";
@@ -22,7 +31,7 @@ if (in_array("debug",$argv) || $argv[2] == "all") {
 }
 include 'Net/SSH2.php';
 $server = $argv[1];
-$cmd_base = 'uemcli -d ' . $server . ' -u storage_user -p storage_password ';
+$cmd_base = "uemcli -d {$server} -u {$storage_user} -p {$storage_password}";
 $comandos = array('sistema' => $cmd_base . '/sys/general show -detail',
                   'procs'   => $cmd_base . '/env/sp show',
                   'discos'  => $cmd_base . '/env/disk show -detail',
@@ -123,7 +132,7 @@ $my_pid = getmypid();
                 gera_log("script em execucao com pid diferente $file_pid");
              }
            } else {
-                gera_log("arquivo $tmp_file n▒o existe.");
+                gera_log("$tmp_file does not exists.");
            }
            exit;
         break;
@@ -153,8 +162,8 @@ if ($debug == "on") {
   print "conecting to vnxe to colect info from $server storace\n";
 }
 
-$ssh = new Net_SSH2('VNXE_IP_ADDRESS');
-if (!$ssh->login('VNXE_LINUX_USERNAME', 'VNXE_USER_PASSWORD')) {
+$ssh = new Net_SSH2($vnxe_linux_ip_address);
+if (!$ssh->login($vnxe_linux_username, $vnxe_linux_password)) {
    print('Login Failed');
    check_pidfile('sair');
 }
