@@ -4,6 +4,7 @@
 $vnxe_linux_ip_address = "10.10.10.10";
 $vnxe_linux_username = "username";
 $vnxe_linux_password = "verysecretPassword";
+
 //Storage cedentials
 $storage_user = "monitor";
 $storage_password = "monitor_passowrd";
