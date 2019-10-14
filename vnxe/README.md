@@ -1,3 +1,5 @@
+#First, edit the script to fill the usernames, vnxe ip address and passowrds
+
 ### To do the discovery
 
 -./vnxe/storages.php 172.17.32.131 sistema discovery
