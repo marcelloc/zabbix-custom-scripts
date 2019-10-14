@@ -37,6 +37,7 @@ $comandos = array('sistema' => $cmd_base . '/sys/general show -detail',
                   'discos'  => $cmd_base . '/env/disk show -detail',
                   'bateria' => $cmd_base . '/env/bat show',
                   'pools'   => $cmd_base . '/stor/config/pool show -detail',
+                  'luns'    => $cmd_base . '/stor/prov/luns/lun show -detail',
                   'fontes'  => $cmd_base . '/env/ps show');
 
 $output = array();
