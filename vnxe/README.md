@@ -1,13 +1,13 @@
 #First, edit the script to fill the usernames, vnxe ip address and passowrds
 
 ### To do the discovery
-
--./vnxe/storages.php 172.17.32.131 sistema discovery
-- ./vnxe/storages.php 172.17.32.131 procs discovery
-- ./vnxe/storages.php 172.17.32.131 discos discovery
-- ./vnxe/storages.php 172.17.32.131 bateria discovery
-- ./vnxe/storages.php 172.17.32.131 pools discovery 
-- ./vnxe/storages.php 172.17.32.131 fontes discovery
+```shell
+./vnxe/storages.php 172.17.32.131 sistema discovery
+./vnxe/storages.php 172.17.32.131 procs discovery
+./vnxe/storages.php 172.17.32.131 discos discovery
+./vnxe/storages.php 172.17.32.131 bateria discovery
+./vnxe/storages.php 172.17.32.131 pools discovery 
+./vnxe/storages.php 172.17.32.131 fontes discovery
 
 
 ### To see discovered fields
