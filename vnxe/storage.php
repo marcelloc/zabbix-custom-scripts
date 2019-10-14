@@ -91,7 +91,11 @@ function imprime_saida($cmd_out, $arg_cmd2, $arg_cmd3, $arg_cmd4="") {
                         if ($debug == "on"){
                             var_dump($item_value);
                         }
-                        print $item_value[$arg_cmd4] ."\n";
+                         if (preg_match("/\d+ \W(\S+)\W/", $item_value[$arg_cmd4], $mp)) {
+                                print $mp[1]} . "\n";
+                        } else {
+                                print $item_value[$arg_cmd4] ."\n";
+                        }
                     }
             }
         }
