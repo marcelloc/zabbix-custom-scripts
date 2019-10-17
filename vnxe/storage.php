@@ -43,7 +43,7 @@ $comandos = array('sistema' => $cmd_base . '/sys/general show -detail',
 $output = array();
 
 function gera_log($msg) {
-    global $arg;
+    global $argv;
     $my_pid = getmypid();
     $now   = new DateTime;
     $server = $argv[1];
