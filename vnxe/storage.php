@@ -43,9 +43,11 @@ $comandos = array('sistema' => $cmd_base . '/sys/general show -detail',
 $output = array();
 
 function gera_log($msg) {
-  $my_pid = getmypid();
-  $now   = new DateTime;
-  file_put_contents("/tmp/saidaphp.log", $now->format( 'Y-m-d H:i:s' ) . " $msg (pid:$my_pid)\n", FILE_APPEND);
+    global $arg;
+    $my_pid = getmypid();
+    $now   = new DateTime;
+    $server = $argv[1];
+    file_put_contents("/tmp/{$server}_saida_phpvnxe.log", $now->format( 'Y-m-d H:i:s' ) . " $msg (pid:$my_pid)\n", FILE_APPEND);
 }
 
 
@@ -108,9 +110,10 @@ function imprime_saida($cmd_out, $arg_cmd2, $arg_cmd3, $arg_cmd4="") {
 
 function check_pidfile($action) {
     global $argv;
-$tmp_file = "/tmp/vnxephp.pid";
-$my_pid = getmypid();
-  switch ($action) {
+    $server = $argv[1];
+    $tmp_file = "/tmp/{$server}_vnxephp.pid";
+    $my_pid = getmypid();
+    switch ($action) {
         case 'criar':
            while (file_exists($tmp_file)) {
               gera_log("Aguardando fim da execucao do processo $my_pid");
@@ -161,22 +164,23 @@ if (array_key_exists(4, $argv)) {
 }
 
 // run cmd
-//check_pidfile('criar');
+if (in_array('discovery', $argv)) {
+    check_pidfile('criar');
 
-if ($debug == "on") {
-  print "conecting to vnxe to colect info from $server storace\n";
+    if ($debug == "on") {
+        print "conecting to vnxe to colect info from $server storace\n";
+    }
+
+    $ssh = new Net_SSH2($vnxe_linux_ip_address);
+    if (!$ssh->login($vnxe_linux_username, $vnxe_linux_password)) {
+        print('Login Failed');
+        check_pidfile('sair');
+    }
+
+    if ($debug == "on") {
+        echo "running $cmd...\n";
+    }
 }
-
-$ssh = new Net_SSH2($vnxe_linux_ip_address);
-if (!$ssh->login($vnxe_linux_username, $vnxe_linux_password)) {
-   print('Login Failed');
-   check_pidfile('sair');
-}
-
-if ($debug == "on") {
-echo "running $cmd...\n";
-}
-
 //verify args
 $arg_cmd2 = preg_replace("/\W/", "", $argv[2]);
 $arg_cmd3 = preg_replace("/\W/", "", $argv[3]);
@@ -190,5 +194,7 @@ if ($arg_cmd3 == "discovery") {
 
 imprime_saida($cmd_out, $arg_cmd2, $arg_cmd3, $arg_cmd4);
 
-check_pidfile('sair');
+if (in_array('discovery', $argv)) {
+    check_pidfile('sair');
+}
 ?>
